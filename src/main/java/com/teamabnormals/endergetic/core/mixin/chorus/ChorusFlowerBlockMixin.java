@@ -17,13 +17,13 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(ChorusFlowerBlock.class)
 public final class ChorusFlowerBlockMixin {
 
-	@Redirect(at = @At(value = "INVOKE", ordinal = 3), method = "canSurvive")
+	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z", ordinal = 0), method = "canSurvive")
 	private boolean canSurvive(BlockState state, Block block) {
 		return state.is(EEBlockTags.CHORUS_PLANTABLE);
 	}
 
-	@Redirect(at = @At(value = "INVOKE", ordinal = 8), method = "randomTick")
-	private BlockState isEndstone(ServerLevel level, BlockPos pos) {
+	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;", ordinal = 0), method = "randomTick")
+	private BlockState isEndStone(ServerLevel level, BlockPos pos) {
 		BlockState blockState = level.getBlockState(pos);
 		return blockState.is(EEBlockTags.CHORUS_PLANTABLE) ? Blocks.END_STONE.defaultBlockState() : blockState;
 	}
